@@ -1,0 +1,25 @@
+@tailwind components;
+
+@layer components {
+  .tab-list {
+    @apply bg-gray-200 mb-4 p-0 rounded-xl overflow-x-hidden flex;
+  }
+
+  .tab-list__tab {
+    @apply flex-shrink-0 relative;
+  }
+
+  .tab-list__label {
+    @apply py-3 px-4 block;
+  }
+
+  .tab-list__divider {
+    @apply border-2 border-green-300 w-full block absolute bottom-0;
+  }
+
+  .tab-panels {
+  }
+
+  .tab-panels__panel {
+  }
+}
