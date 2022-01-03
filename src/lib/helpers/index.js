@@ -9,76 +9,74 @@ export const movesByGenAndVersion = (pokemonMoves) => {
   // Create a temporary array.
   const array = [];
 
-  // Loop over all pokémon moves.
   for (let pokemonMove of pokemonMoves) {
-    // Get the versiongroup of a move learn method.
-    let versiongroupLearnMethods =
-      pokemonMove.learn_methods.versiongroup_learn_methods;
-    // Get the learn method.
-    let learnMethod = pokemonMove.learn_methods.name;
+    let generation = pokemonMove.versions.generation_id;
+    let group = pokemonMove.versions.name;
+    let versions = pokemonMove.versions.version;
+    let method = pokemonMove.method;
 
-    // Loop over the learn methods.
-    for (let versiongroupLearnMethod of versiongroupLearnMethods) {
-      // Assign the version and generation id because we need those.
-      let version = versiongroupLearnMethod.versiongroups.name;
-      let generation_id = versiongroupLearnMethod.versiongroups.generation_id;
+    let object = _.find(array, { generation });
 
-      // Check if there is an array item with the generation id.
-      // If there is no array item, create one with the generation and an array of versions.
-      if (!array[generation_id]) {
-        array[generation_id] = {
-          generation: generation_id,
-          versions: [],
-        };
-      }
+    if (!object) {
+      object = {
+        generation,
+        group: [],
+      };
 
-      // Check if there is an object with the version in the array.
-      let versionObject = _.find(array[generation_id].versions, { version });
-
-      // If not, create a version object, with an array for a list of different move learning methods.
-      if (!versionObject) {
-        versionObject = {
-          version,
-          methods: [],
-        };
-
-        // Push the version object into the array of versions.
-        array[generation_id].versions.push(versionObject);
-      }
-
-      // After retrieving or creating the version object we check if the version object has a learnMethod object with the corresponding method.
-      let learnMethodObject = _.find(versionObject.methods, {
-        method: learnMethod,
-      });
-
-      // If there is no learn method found, we create the object for it with an empty moves array.
-      if (!learnMethodObject) {
-        learnMethodObject = {
-          method: learnMethod,
-          moves: [],
-        };
-
-        // Push the object onto the methods array.
-        versionObject.methods.push(learnMethodObject);
-      }
-
-      // Check if move with learn method already exists in list.
-      let moveAlreadyAdded = !_.find(learnMethodObject.moves, {
-        level: pokemonMove.level,
-        learn_methods: {
-          name: pokemonMove.learn_methods.name,
-        },
-        move: {
-          name: pokemonMove.move.name,
-        },
-      });
-
-      if (moveAlreadyAdded) {
-        // Push the move into the array of moves inside of the corresponding version -> method.
-        learnMethodObject.moves.push(pokemonMove);
-      }
+      array[generation] = object;
     }
+
+    let object2 = _.find(object.group, { group });
+
+    if (!object2) {
+      object2 = {
+        group,
+        versions,
+        methods: [],
+      };
+
+      object.group.push(object2);
+    }
+
+    let object3 = _.find(object2.methods, { method });
+
+    if (!object3) {
+      object3 = {
+        method,
+        moves: [],
+      };
+
+      object2.methods.push(object3);
+    }
+
+    object3.moves.push(pokemonMove);
   }
 
   return array;
+};
+
+/**
+ *
+ * @param {Array} array  The array with languages.
+ * @param {String} locale The key of the current localization.
+ * @returns {Object} The object of the selected language.
+ */
+export const getLanguage = (array, locale = "en") => {
+  return (
+    _.find(array, {
+      language: {
+        iso639: locale,
+      },
+    }) ?? null
+  );
+};
+
+/**
+ * Normalizes a string retrieved from the Pokeapi.
+ *
+ * @param {String} string String to normalize.
+ * @returns {String} Normalized string.
+ */
+export const normalize = (string) => {
+  return string.replace("-", " ");
 };

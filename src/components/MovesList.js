@@ -1,13 +1,11 @@
 import _ from "lodash";
 import { useMemo, useState } from "react";
-import "./MovesList.css";
-
-/** TODO:: Fetch tm/tr/hm data from api. */
+import { normalize } from "../lib/helpers";
 
 const MovesList = ({ moves, method }) => {
-  const isLevelUp = method === "level-up";
-  const isMachine = method === "machine";
-  const isTutor = method === "tutor";
+  const isLevelUp = method.name === "level-up";
+  const isMachine = method.name === "machine";
+  const isTutor = method.name === "tutor";
 
   const defaultOrder = useMemo(() => {
     if (isLevelUp) return "level";
@@ -17,13 +15,13 @@ const MovesList = ({ moves, method }) => {
     if (isTutor) return "move.names[0].name";
   }, [method]);
 
-  const [order, setOrder] = useState(defaultOrder);
+  const [order] = useState(defaultOrder);
 
   const orderedMoves = useMemo(() => _.orderBy(moves, order), [order]);
 
   return (
-    <div className="move-table">
-      <table className="move-table__table">
+    <div className="w-full overflow-x-auto">
+      <table className="details details--moves">
         <thead>
           <tr>
             {isLevelUp && <th>LV.</th>}
@@ -38,7 +36,7 @@ const MovesList = ({ moves, method }) => {
           {orderedMoves.map(({ move, level, learn_methods }, index) => (
             <tr key={`move-${index}`}>
               {isLevelUp && <th>{level}</th>}
-              <td>{move.names[0].name}</td>
+              <td className="capitalize">{normalize(move.name)}</td>
               <td>
                 <img
                   src={`/move-${move.damange_class.name}.png`}

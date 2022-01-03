@@ -1,6 +1,6 @@
 import { Tab as HeadlessTab } from "@headlessui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import "./Tab.css";
+import { useEffect, useRef, useState } from "react";
 
 export const TabGroup = ({ children }) => (
   <AnimatePresence exitBeforeEnter>
@@ -9,19 +9,47 @@ export const TabGroup = ({ children }) => (
 );
 
 export const TabList = ({ children }) => {
-  return <HeadlessTab.List className="tab-list">{children}</HeadlessTab.List>;
+  const draggable = useRef();
+
+  const [maxDrag, setMaxDrag] = useState(0);
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setMaxDrag(-(entry.target.scrollWidth - entry.target.clientWidth));
+      }
+    });
+
+    observer.observe(draggable.current);
+  }, [draggable]);
+
+  return (
+    <HeadlessTab.List className="bg-gray-200 mb-4 p-0 rounded-xl overflow-x-hidden w-full">
+      <motion.div
+        ref={draggable}
+        className="flex"
+        drag="x"
+        dragConstraints={{
+          right: 0,
+          left: maxDrag,
+        }}
+      >
+        {children}
+      </motion.div>
+    </HeadlessTab.List>
+  );
 };
 
 export const Tab = ({ children, layoutId, ...props }) => {
   return (
-    <HeadlessTab className="tab-list__tab" {...props}>
+    <HeadlessTab className="flex-shrink-0 relative capitalize" {...props}>
       {({ selected }) => (
         <>
-          <span className="tab-list__label">{children}</span>
+          <span className="py-3 px-4 block">{children}</span>
 
           {selected && (
             <motion.div
-              className="tab-list__divider"
+              className="h-1 bg-slate-900 w-full block absolute bottom-0 rounded-full"
               layoutId={layoutId ?? "underline"}
             />
           )}

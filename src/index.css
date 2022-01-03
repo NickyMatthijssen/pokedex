@@ -1,13 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 html,
 body {
   font-family: "Roboto", sans-serif;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer components {
   .section__title {
@@ -21,4 +21,117 @@ body {
   .header {
     @apply h-24;
   }
+
+  .details {
+    @apply w-full table-auto;
+  }
+
+  .details tr {
+    @apply border-b;
+  }
+
+  .details td {
+    @apply px-4 py-2;
+  }
+
+  .details--pokemon th {
+    @apply w-28 text-sm font-semibold text-right text-gray-500;
+  }
+
+  .details--moves {
+    @apply w-full text-left border-collapse;
+  }
+
+  .details--moves td,
+  .details--moves th {
+    @apply px-3 py-2 border-b;
+  }
+
+  .details--moves th {
+    @apply bg-gray-200 border border-gray-100;
+  }
+
+  .details--moves tbody th {
+    @apply text-right;
+  }
+
+  .types {
+    @apply flex flex-wrap gap-x-2 gap-y-1;
+  }
+
+  .types__item {
+    @apply w-16 py-1 text-center rounded inline-block text-white capitalize text-sm;
+  }
+}
+
+.types__item--bug {
+  background-color: #a8b820;
+}
+
+.types__item--dark {
+  background-color: #49392f;
+}
+
+.types__item--dragon {
+  background-color: #7038f8;
+}
+
+.types__item--electric {
+  background-color: #f8d030;
+}
+
+.types__item--fairy {
+  background-color: #ee99ac;
+}
+
+.types__item--fighting {
+  background-color: #c03028;
+}
+
+.types__item--fire {
+  background-color: #f08030;
+}
+
+.types__item--flying {
+  background-color: #a890f0;
+}
+
+.types__item--ghost {
+  background-color: #705898;
+}
+
+.types__item--grass {
+  background-color: #78c850;
+}
+
+.types__item--ground {
+  background-color: #e0c068;
+}
+
+.types__item--ice {
+  background-color: #98d8d8;
+}
+
+.types__item--normal {
+  background-color: #a8a878;
+}
+
+.types__item--poison {
+  background-color: #a040a0;
+}
+
+.types__item--psychic {
+  background-color: #f85888;
+}
+
+.types__item--rock {
+  background-color: #b8a038;
+}
+
+.types__item--steel {
+  background-color: #b8b8d0;
+}
+
+.types__item--water {
+  background-color: #6890f0;
 }

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { useMemo } from "react";
-import { movesByGenAndVersion } from "../lib/helpers";
+import { movesByGenAndVersion, normalize } from "../lib/helpers";
 import MovesList from "./MovesList";
 import { Tab as MyTab, TabGroup, TabList, TabPanel, TabPanels } from "./Tab";
 
@@ -22,32 +22,35 @@ const Moves = ({ pokemonMoves }) => {
         </TabList>
 
         <TabPanels>
-          {generations.map(({ generation, versions }) => (
+          {generations.map(({ generation, group }) => (
             <TabPanel key={`generation-${generation}-panel`}>
               <TabGroup>
                 <TabList>
-                  {versions.map(({ version }) => (
-                    <MyTab key={`generation-${version}-tab`} layoutId="version">
-                      {version}
+                  {group.map(({ group, versions }) => (
+                    <MyTab key={`generation-${group}-tab`} layoutId="version">
+                      {versions.map(
+                        (version, index) =>
+                          `${normalize(version.name)} ${
+                            index + 1 < versions.length ? "/" : ""
+                          } `
+                      )}
                     </MyTab>
                   ))}
                 </TabList>
 
                 <TabPanels>
-                  {versions.map(({ version, methods }) => (
-                    <TabPanel key={`generation-${version}-panel`}>
+                  {group.map(({ group, methods }) => (
+                    <TabPanel key={`generation-${group}-panel`}>
                       <div className="flex flex-col space-y-12">
                         {methods.map(({ method, moves }) => (
-                          <div key={`generation-${version}-${method}`}>
+                          <div key={`generation-${group}-${method.name}`}>
                             <div className="mb-4">
-                              <h4 className="text-lg font-semibold mb-1">
-                                {method}
+                              <h4 className="text-lg font-semibold mb-1 capitalize">
+                                {normalize(method.name)}
                               </h4>
 
                               <p className="paragraph">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse elit dolor,
-                                condimentum eu ultricies id.
+                                {method.descriptions[0].description}
                               </p>
                             </div>
 

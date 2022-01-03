@@ -20,7 +20,7 @@ const Spinner = () => (
     exit="exit"
     className="flex justify-center items-center w-full h-screen"
   >
-    <div className="border-8 border-transparent border-t-red-400 animate-spin w-24 h-24 rounded-full" />
+    <div className="border-8 border-transparent border-t-slate-900 animate-spin w-24 h-24 rounded-full" />
   </motion.div>
 );
 

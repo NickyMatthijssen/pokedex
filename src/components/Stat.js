@@ -12,11 +12,12 @@ const Stat = ({ pokemonStat }) => {
       <div className="flex-1">
         <div className="rounded-full bg-gray-200 overflow-hidden">
           <motion.div
-            className="w-full h-2.5 bg-green-300 rounded-full"
+            className="w-full h-2.5 bg-slate-900 rounded-full"
             initial={{ width: 0 }}
             animate={{
               width: `${Math.ceil((pokemonStat.base_stat / 200) * 100)}%`,
             }}
+            key={pokemonStat.stat.name}
           />
         </div>
       </div>
